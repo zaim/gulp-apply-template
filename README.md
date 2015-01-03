@@ -106,6 +106,7 @@ gulp.src('pages/*.md')
     return require('./properties/' + file.basename + '.json');
   }))
   .pipe(applyTemplate({
+    engine: 'swig',
     props: ['data'],
     context: function (file) {
       return file.data;
