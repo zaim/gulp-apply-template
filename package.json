@@ -2,16 +2,22 @@
   "name": "gulp-apply-template",
   "version": "0.0.1",
   "description": "Apply templates to file contents",
-  "main": "index.js",
-  "scripts": {
-    "test": "mocha"
-  },
   "keywords": [
     "gulpplugin",
     "template"
   ],
-  "author": "Zaim Bakar",
+  "homepage": "https://github.com/zaim/gulp-apply-template",
+  "bugs": "https://github.com/zaim/gulp-apply-template/issues",
   "license": "MIT",
+  "author": "Zaim Bakar",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/zaim/gulp-apply-template.git"
+  },
+  "scripts": {
+    "test": "mocha"
+  },
   "dependencies": {
     "consolidate": "^0.10.0",
     "event-stream": "^3.2.1",
