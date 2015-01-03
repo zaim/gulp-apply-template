@@ -9,7 +9,7 @@ module.exports = plugin;
 
 
 /**
- * Handler methods for Buffer, Stream and null contents.
+ * Handler methods for Buffer and Stream contents.
  *
  * read(contents, cb):
  *   Given Stream/Buffer `contents`, return it as string
@@ -42,7 +42,7 @@ var streamHandler = {
 
 
 /**
- * Transform Buffer, Stream or null file contents.
+ * Transform Buffer or Stream file contents.
  *
  * file: the Vinyl object
  * transform: function(contentString, callback)
@@ -60,7 +60,7 @@ function transform (file, transformer, callback) {
     handler = streamHandler;
   }
 
-  // Read file buffer/stream/null contents
+  // Read file buffer/stream contents
   handler.read(file.contents, function (err, contents) {
     // Pass `contents` string to transformer function
     transformer(contents, function (err, transformed) {
