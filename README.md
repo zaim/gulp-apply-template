@@ -1,12 +1,114 @@
 # gulp-apply-template
 
-> Apply templates to files.
+> Apply templates to file contents.
 
 For each file in the stream, replace the file's contents by rendering a
-template, providing the file object as the template's data or context.
+template, using the file object as the template's data or context.
 
-Differences from [gulp-wrap](https://www.npmjs.com/packages/gulp-wrap):
+Similar to [gulp-wrap](https://www.npmjs.com/packages/gulp-wrap), with these
+differences:
 
 * Uses [consolidate.js](https://github.com/tj/consolidate.js) to support
   multiple template engines.
-* Uses properties from `file` object itself as template context.
+* Uses properties from File object itself as template context.
+
+
+## Usage
+
+Install as a development dependency:
+
+```
+npm install --save-dev gulp-apply-template
+```
+
+Then, use it in your `gulpfile.js`:
+
+```javascript
+var applyTemplate = require('gulp-apply-template');
+
+gulp.task('pages', function () {
+  return gulp.src('pages/*.html')
+    .pipe(applyTemplate({
+      engine: 'swig',
+      template: 'templates/layout.tpl'
+    })
+    .pipe(gulp.dest('dist'));
+});
+```
+
+
+## API
+
+`gulp-apply-template` is called with a single options object as an argument.
+The available options are:
+
+### engine
+
+Type: `string` or `function(context, file)` **required**
+
+The template engine to use. If a function, it will be called with these
+arguments, returning the engine name to use:
+
+  * **context**: The template context
+
+  * **file**: The File object being processed
+
+### template
+
+Type: `string` or `function(context, file)` **required**
+
+The template file path to use. If a function, it will be called with
+the same arguments as `engine`, returning the template path.
+
+### context
+
+Type: `object` or `function(file)`
+
+The default template context to use. If a function, it will be called with
+one argument, `file`, the File object. Defaults to an empty object. These
+will always override properties assigned from the File object.
+
+### props
+
+Type: `array`
+
+Array of names of File object properties to assign to template context,
+defaults to `['path', 'contents', 'data']`.
+
+
+## Examples
+
+Using [gulp-front-matter]() to determine template engine and path to use:
+
+```javascript
+gulp.src('pages/*.md')
+  .pipe(frontMatter({
+    property: 'data'
+  }))
+  .pipe(applyTemplate({
+    engine: function (context) {
+      return context.data.templateEngine;
+    },
+    template: function (context) {
+      return context.data.templatePath;
+    }
+  })
+  .pipe(gulp.dest('dist'));
+```
+
+Ignoring Vinyl File properties and using only `data` provided by
+[gulp-data]():
+
+```javascript
+gulp.src('pages/*.md')
+  .pipe(data(function (file) {
+    return require('./properties/' + file.basename + '.json');
+  }))
+  .pipe(applyTemplate({
+    props: ['data'],
+    context: function (file) {
+      return file.data;
+    }
+  })
+  .pipe(gulp.dest('dist'));
+```

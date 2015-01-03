@@ -1,7 +1,7 @@
 {
   "name": "gulp-apply-template",
   "version": "0.0.1",
-  "description": "Render a template wrapping file contents",
+  "description": "Apply templates to file contents",
   "main": "index.js",
   "scripts": {
     "test": "mocha"
