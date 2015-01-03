@@ -5,7 +5,7 @@
 For each file in the stream, replace the file's contents by rendering a
 template, using the file object as the template's data or context.
 
-Similar to [gulp-wrap](https://www.npmjs.com/packages/gulp-wrap), with these
+Similar to [gulp-wrap](https://www.npmjs.com/package/gulp-wrap), with these
 differences:
 
 * Uses [consolidate.js](https://github.com/tj/consolidate.js) to support
@@ -78,7 +78,8 @@ defaults to `['path', 'contents', 'data']`.
 
 ## Examples
 
-Using [gulp-front-matter]() to determine template engine and path to use:
+Using [gulp-front-matter](https://www.npmjs.com/package/gulp-front-matter)
+to determine template engine and path to use:
 
 ```javascript
 gulp.src('pages/*.md')
@@ -97,7 +98,7 @@ gulp.src('pages/*.md')
 ```
 
 Ignoring Vinyl File properties and using only `data` provided by
-[gulp-data]():
+[gulp-data](https://www.npmjs.com/package/gulp-data):
 
 ```javascript
 gulp.src('pages/*.md')
