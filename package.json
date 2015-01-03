@@ -1,0 +1,25 @@
+{
+  "name": "gulp-apply-template",
+  "version": "0.0.1",
+  "description": "Render a template wrapping file contents",
+  "main": "index.js",
+  "scripts": {
+    "test": "mocha"
+  },
+  "keywords": [
+    "gulpplugin",
+    "template"
+  ],
+  "author": "Zaim Bakar",
+  "license": "MIT",
+  "dependencies": {
+    "consolidate": "^0.10.0",
+    "event-stream": "^3.2.1",
+    "gulp-util": "^3.0.1"
+  },
+  "devDependencies": {
+    "expect.js": "^0.3.1",
+    "mocha": "^2.1.0",
+    "swig": "^1.4.2"
+  }
+}
