@@ -1,4 +1,5 @@
-# gulp-apply-template [![Build Status][travis-img]][travis-url] [![dependencies][david-img]][david-url] [![devDependencies][david-dev-img]][david-url]
+# gulp-apply-template
+[![Build Status][travis-img]][travis-url] [![dependencies][david-img]][david-url] [![devDependencies][david-dev-img]][david-url]
 
 > Apply templates to file contents.
 
