@@ -1,5 +1,6 @@
 /* global describe, it */
 
+var npath = require('path');
 var gutil = require('gulp-util');
 var es = require('event-stream');
 var expect = require('expect.js');
@@ -49,9 +50,16 @@ function str () {
 }
 
 
-function ticker (total, done) {
-  return function () {
+function ticker (total, done, dbg) {
+  return function (m) {
+    m = m || '';
+    if (dbg) {
+      console.log('tick', m);
+    }
     if (--total === 0) {
+      if (dbg) {
+        console.log('boom', m);
+      }
       done();
     }
   };
@@ -380,6 +388,78 @@ function testSuit (mode) {
 
       stream.once('data', function (file) {
         testFileContents(file, expected, mode, tick);
+      });
+    });
+
+
+    it('should not leak options into subsequent files', function (done) {
+      var expected = {
+        'options1.txt' : str(
+          'path = "test/fixtures/options1.txt"',
+          'data = "[object Object]"',
+          'data.custom = "value"',
+          'contents = "' + contentStub + '"',
+          'base = ""',
+          'cwd = ""',
+          'other = "options1.txt-other"',
+          'assigned = "options1.txt-assigned"',
+          'props = "options1.txt-props"',
+          'file = "[object Object]"',
+          'file.path = "test/fixtures/options1.txt"',
+          'file.isBuffer = "' + isBuffer + '"',
+          'file.isStream = "' + isStream + '"'
+        ),
+        'options2.txt' : str(
+          'path = "test/fixtures/options2.txt"',
+          'data = "[object Object]"',
+          'data.custom = "value"',
+          'contents = "' + contentStub + '"',
+          'base = ""',
+          'cwd = ""',
+          'other = "options2.txt-other"',
+          'assigned = "options2.txt-assigned"',
+          'props = "options2.txt-props"',
+          'file = "[object Object]"',
+          'file.path = "test/fixtures/options2.txt"',
+          'file.isBuffer = "' + isBuffer + '"',
+          'file.isStream = "' + isStream + '"'
+        )
+      };
+
+      var tick = ticker(6, done);
+
+      var files = [
+        createFile('options1.txt', mode),
+        createFile('options2.txt', mode)
+      ];
+
+      var stream = plugin({
+        engine: 'swig',
+        template: function (ctx, file) {
+          var name = npath.basename(file.path);
+          expect(ctx.other).eql(name + '-other');
+          expect(ctx.assigned).eql(name + '-assigned');
+          expect(ctx.props).eql(name + '-props');
+          tick('template ' + name);
+          return 'test/fixtures/template.tpl';
+        },
+        context: function (file) {
+          var name = npath.basename(file.path);
+          tick('context ' + name);
+          return {
+            other: name + '-other',
+            assigned: name + '-assigned',
+            props: name + '-props'
+          };
+        }
+      });
+
+      stream.write(files[0]);
+      stream.write(files[1]);
+
+      stream.on('data', function (file) {
+        var name = npath.basename(file.path);
+        testFileContents(file, expected[name], mode, tick);
       });
     });
 

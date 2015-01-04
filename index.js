@@ -107,9 +107,12 @@ function plugin (options) {
   }
 
   return es.map(function (file, callback) {
-    var userContext = context || {};
-    var currentContext = {};
-    var contentsInTemplate = false;
+    var
+      userEngine = engine,
+      userTemplate = template,
+      userContext = context || {},
+      currentContext = {},
+      contentsInTemplate = false;
 
     // Wrap `callback` to cast any errors as a PluginError
     function emit (err, file) {
@@ -161,13 +164,13 @@ function plugin (options) {
     );
 
     // Dynamically determine what template engine to use
-    if (typeof engine === 'function') {
-      engine = engine(currentContext, file);
+    if (typeof userEngine === 'function') {
+      userEngine = userEngine(currentContext, file);
     }
 
     // Dynamically determine what template path to use
-    if (typeof template === 'function') {
-      template = template(currentContext, file);
+    if (typeof userTemplate === 'function') {
+      userTemplate = userTemplate(currentContext, file);
     }
 
     if (file.isBuffer() || file.isStream()) {
@@ -175,7 +178,7 @@ function plugin (options) {
         if (contentsInTemplate) {
           currentContext.contents = contents;
         }
-        engines[engine](template, currentContext, cb);
+        engines[userEngine](userTemplate, currentContext, cb);
       }, emit);
     } else {
       callback(null, file);
