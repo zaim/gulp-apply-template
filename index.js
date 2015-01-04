@@ -111,6 +111,17 @@ function plugin (options) {
     var currentContext = {};
     var contentsInTemplate = false;
 
+    // Wrap `callback` to cast any errors as a PluginError
+    function emit (err, file) {
+      if (err) {
+        err.message = NAME + ': ' + err.message;
+        err = new gutil.PluginError(NAME, err);
+        callback(err);
+      } else {
+        callback(null, file);
+      }
+    }
+
     // Dynamically generate user context
     if (typeof userContext === 'function') {
       userContext = userContext(file);
@@ -165,7 +176,7 @@ function plugin (options) {
           currentContext.contents = contents;
         }
         engines[engine](template, currentContext, cb);
-      }, callback);
+      }, emit);
     } else {
       callback(null, file);
     }

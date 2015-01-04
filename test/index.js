@@ -406,6 +406,25 @@ describe('gulp-apply-template', function () {
     });
   });
 
+  describe('error handling', function () {
+    it('should emit error on missing template', function (done) {
+      var stream = plugin({
+        engine: 'swig',
+        template: 'test/fixture/no-such-template.tpl'
+      });
+
+      var file = createFile('test-error.txt', 'buffer');
+
+      stream.write(file);
+
+      stream.once('error', function (e) {
+        expect(e).a(gutil.PluginError);
+        expect(e.message).match(NAME);
+        done();
+      });
+    });
+  });
+
   describe('in buffer mode', testSuit('buffer'));
   describe('in stream mode', testSuit('stream'));
 });
