@@ -1,4 +1,4 @@
-# gulp-apply-template
+# gulp-apply-template [![Build Status][travis-img]][travis-url] [![dependencies][david-img]][david-url] [![devDependencies][david-dev-img]][david-url]
 
 > Apply templates to file contents.
 
@@ -114,3 +114,9 @@ gulp.src('pages/*.md')
   })
   .pipe(gulp.dest('dist'));
 ```
+
+[travis-url]: https://travis-ci.org/zaim/gulp-apply-template
+[travis-img]: http://img.shields.io/travis/zaim/gulp-apply-template.svg
+[david-url]: https://david-dm.org/zaim/gulp-apply-template
+[david-img]: https://img.shields.io/david/zaim/gulp-apply-template.svg
+[david-dev-img]: https://img.shields.io/david/dev/zaim/gulp-apply-template.svg
