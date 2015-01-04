@@ -78,8 +78,8 @@ defaults to `['path', 'contents', 'data']`.
 
 ## Examples
 
-Using [gulp-front-matter](https://www.npmjs.com/package/gulp-front-matter)
-to determine template engine and path to use:
+Use [gulp-front-matter](https://www.npmjs.com/package/gulp-front-matter)
+to dynamically determine template engine and path to use:
 
 ```javascript
 gulp.src('pages/*.md')
@@ -97,7 +97,7 @@ gulp.src('pages/*.md')
   .pipe(gulp.dest('dist'));
 ```
 
-Ignoring Vinyl File properties and using only `data` provided by
+Ignore Vinyl File properties and use only contents and data provided by
 [gulp-data](https://www.npmjs.com/package/gulp-data):
 
 ```javascript
@@ -107,7 +107,7 @@ gulp.src('pages/*.md')
   }))
   .pipe(applyTemplate({
     engine: 'swig',
-    props: ['data'],
+    props: ['contents', 'data'],
     context: function (file) {
       return file.data;
     }
